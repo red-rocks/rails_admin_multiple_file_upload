@@ -1,0 +1,68 @@
+= stylesheet_link_tag 'rails_admin/rails_admin_multiple_file_upload'
+= javascript_include_tag 'rails_admin/rails_admin_multiple_file_upload'
+
+.rails_admin_multiple_file_upload_block
+  .controls
+    ul.nav.nav-tabs
+      - multiple_file_upload_fields.each do |f|
+        li
+          ruby:
+            if f.is_a?(Hash)
+              next if f.empty?
+              embedded_field              = f.keys.first
+              embedded_model_upload_field  = f.values.first
+              embedded_model_upload_field  = embedded_model_upload_field.last if embedded_model_upload_field.is_a?(Array)
+
+              i18n_path         = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{embedded_field}.#{embedded_model_upload_field}"
+              i18n_path_default = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{embedded_field}"
+
+              link = "#multiple_file_upload_#{embedded_field}_#{embedded_model_upload_field}"
+              title = I18n.t(i18n_path, default: I18n.t(i18n_path_default))
+
+            else
+              i18n_path         = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{f}.image"
+              i18n_path_default = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{f}"
+              link = "#multiple_file_upload_#{f}_image"
+              title = I18n.t(i18n_path, default: I18n.t(i18n_path_default))
+            end
+
+          = link_to I18n.t(i18n_path, default: I18n.t(i18n_path_default)), link, title: title, "data-toggle" => "tab"
+
+  .tab-content
+      
+    - multiple_file_upload_fields.each do |f|
+      - if f.is_a?(Hash)
+        - next if f.empty?
+        - embedded_field                = f.keys.first
+        - embedded_model_upload_field   = f.values.first
+      - else
+        - embedded_field                = f
+        - embedded_model_upload_field   = "image"
+
+      - embedded_objects = @object.send(embedded_field)
+      - embedded_model_ordered_scope = ""
+      - if embedded_objects.respond_to?("sorted")
+        - embedded_model_ordered_scope = "sorted"
+
+      - if embedded_objects.respond_to?("ordered") and embedded_model_ordered_scope.blank?
+        - embedded_model_ordered_scope = "ordered"
+        
+      .tab-pane{id="multiple_file_upload_#{embedded_field}_#{embedded_model_upload_field}"}
+        .row-fluid
+          - block_id  = "rails_admin_multiple_upload_#{embedded_field}_#{embedded_model_upload_field}"
+          - button_id = "rails_admin_multiple_upload_#{embedded_field}_#{embedded_model_upload_field}_button"
+          .span12.rails_admin_multiple_upload{id="#{block_id}"}
+            = rails_admin_multiple_file_upload embedded_objects.send(embedded_model_ordered_scope).to_a, {embedded_field: embedded_field, embedded_model_upload_field: embedded_model_upload_field}
+            
+          = button_tag "Загрузить", id: button_id
+          javascript:
+            $("##{block_id} .dropzone").dropzone({
+              paramName:        "#{embedded_field}[#{embedded_model_upload_field}]",
+              autoProcessQueue: false,
+              addRemoveLinks:   true
+            });
+            $("##{button_id}").click(function(e){
+              e.preventDefault();
+              $("##{block_id} .dropzone").dropzone().processQueue();
+              return false
+            })

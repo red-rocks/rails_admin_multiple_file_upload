@@ -1,0 +1,9 @@
+ru:
+  admin:
+    actions:
+      multiple_file_upload:
+        menu:       "Загрузка файлов"
+        breadcrumb: "Загрузка файлов"
+        error:      "Ошибка"
+        success:    "Успешно"
+        title:      "Загрузка файлов"
