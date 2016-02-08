@@ -61,8 +61,11 @@
               autoProcessQueue: false,
               addRemoveLinks:   true
             });
+            $("##{block_id} .dropzone")[0].dropzone.on('success', function(){
+              $("##{button_id}").click();
+            });
             $("##{button_id}").click(function(e){
               e.preventDefault();
-              $("##{block_id} .dropzone").dropzone().processQueue();
+              $("##{block_id} .dropzone")[0].dropzone.processQueue();
               return false
             })

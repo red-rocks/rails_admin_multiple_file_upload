@@ -7,7 +7,7 @@ window.Dropzone.dictDefaultMessage  = "Перетащите сюда файлы 
 window.Dropzone.dictFallbackMessage = "Ваш браузер не поддерживает данный способ загрузки файлов!=("
 window.Dropzone.dictFallbackText    = "Используйте стандартные средства загрузки в разделе 'Редактирование'."
 
-window.Dropzone.dictFileTooBig      = "Размер файла слишком большой ({{filesize}} MB). максимально допустимый размер файла - {{maxFilesize}} MB."
+window.Dropzone.dictFileTooBig      = "Размер файла слишком большой ({{filesize}} MB). Максимально допустимый размер файла - {{maxFilesize}} MB."
 window.Dropzone.dictInvalidFileType = "Вы не можете загружать файлы данного типа!"
 
 window.Dropzone.dictResponseError             = "Ошибка загрузки. Код ошибки - {{statusCode}}."

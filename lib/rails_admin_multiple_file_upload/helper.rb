@@ -19,15 +19,15 @@ module RailsAdminMultipleFileUpload
         if multiple_file_upload_paperclip?
           if ef.send(config[:embedded_model_upload_field] + "_content_type") =~ /\Aimage/
             file_url = ef.send(config[:embedded_model_upload_field]).url(multiple_file_upload_thumbnail_size)
-            _ret << content_tag(:div, image_tag(file_url), class: "file_block_load_already")
+            _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
 
           else
-            if ef.respond_to(:name)
+            if ef.respond_to?(:name)
               file_name = ef.name
             else
               file_name = ef.send(config[:embedded_model_upload_field] + "_file_name")
             end
-            _ret << content_tag(:div, link_to(ef.name), class: "file_block_load_already")
+            _ret << content_tag(:span, link_to(ef.name), class: "file_block_load_already")
           end
         end
       end

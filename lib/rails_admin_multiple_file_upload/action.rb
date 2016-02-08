@@ -42,12 +42,14 @@ module RailsAdmin
 
                   main_obj = @object
                   embedded = main_obj.send(embedded_field).new
-                  embedded.send(embedded_model_upload_field + "=", params[embedded_model_upload_field])
-                  embedded.save
+                  embedded.send(embedded_model_upload_field + "=", params[embedded_field][embedded_model_upload_field])
+                  if embedded.save
+                    message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.success')}!</strong>"
+                  else
+                    message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.error')}</strong>: #{embedded.errors.full_messages}"
+                  end
 
-                  message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.success')}!</strong>"
                 rescue Exception => e
-
                   message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.error')}</strong>: #{e}"
                 end
 
