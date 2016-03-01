@@ -68,4 +68,6 @@
               e.preventDefault();
               $("##{block_id} .dropzone")[0].dropzone.processQueue();
               return false
-            })
+            });
+            
+            setCopyAndPasteFor($("##{block_id}")[0]);

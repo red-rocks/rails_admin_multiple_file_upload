@@ -29,7 +29,7 @@ module RailsAdmin
             if params['id'].present?
               if request.get?
                 # @nodes = list_entries(@model_config, :index, nil, nil).sort { |a,b| a.lft <=> b.lft }
-                @files =
+                @files = []
                 render action: @action.template_name
 
               elsif request.post?
@@ -39,6 +39,11 @@ module RailsAdmin
 
                   embedded_model_upload_field  = params[:embedded_model_upload_field].to_s
                   embedded_model_upload_field  = "image" if embedded_model_upload_field.blank?
+
+                  if params[embedded_field][embedded_model_upload_field].original_filename == "undefined"
+                    ext = params[embedded_field][embedded_model_upload_field].content_type.split("/").last
+                    params[embedded_field][embedded_model_upload_field].original_filename = "#{Time.new.to_f*1_000_000}.#{ext}"
+                  end
 
                   main_obj = @object
                   embedded = main_obj.send(embedded_field).new

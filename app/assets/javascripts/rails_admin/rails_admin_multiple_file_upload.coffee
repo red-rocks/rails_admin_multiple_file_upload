@@ -18,3 +18,34 @@ window.Dropzone.dictRemoveFile              = "Удалить"
 window.Dropzone.dictRemoveFileConfirmation  = null
 
 window.Dropzone.dictMaxFilesExceeded  = "Загрузка невозможна. Достигнут максимум количества загружаемых файлов."
+
+
+link_regexp = /^\s*https?:\/\/[^\s]+\s*$/
+
+if window.FileReader
+  window.setCopyAndPasteFor = (el)->
+    dropzone = el.getElementsByClassName('dropzone')[0].dropzone
+    el.onpaste = (event) ->
+      items = (event.clipboardData or event.originalEvent.clipboardData).items
+      blob = null
+      i = 0
+      while i < items.length
+        if items[i].type.indexOf('image') == 0
+          blob = items[i].getAsFile()
+
+        else
+          if items[i].kind == "string"
+            items[i].getAsString (text)->
+              if link_regexp.test(text)
+                xhr = new XMLHttpRequest()
+                xhr.open("GET", text)
+                xhr.responseType = "blob"
+                xhr.onload = ()->
+                  _blob = xhr.response
+                  if _blob != null
+                    dropzone.addFile(_blob)
+                xhr.send()
+
+        i++
+      if blob != null
+        dropzone.addFile(blob)

@@ -69,6 +69,14 @@ I18n:
 
 ```
 
+## Copy and paste support
+
+  After clicking on grey area around dropzone block You can use clipboard.
+  You can paste screenshots (or any images if clipboard) and URL.
+  System add it to dropzone as image (if it`s a really image)
+
+
+
 ## TODO
 
   * Documentation fixes
