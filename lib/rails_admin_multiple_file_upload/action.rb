@@ -34,24 +34,25 @@ module RailsAdmin
 
               elsif request.post?
                 begin
-                  embedded_model  = params[:embedded_model].to_s
-                  embedded_field  = params[:embedded_field].to_s
+                  child_model  = params[:child_model].to_s
+                  child_field  = params[:child_field].to_s
 
-                  embedded_model_upload_field  = params[:embedded_model_upload_field].to_s
-                  embedded_model_upload_field  = "image" if embedded_model_upload_field.blank?
+                  child_model_upload_field  = params[:child_model_upload_field].to_s
+                  child_model_upload_field  = "image" if child_model_upload_field.blank?
 
-                  if params[embedded_field][embedded_model_upload_field].original_filename == "undefined"
-                    ext = params[embedded_field][embedded_model_upload_field].content_type.split("/").last
-                    params[embedded_field][embedded_model_upload_field].original_filename = "#{Time.new.to_f*1_000_000}.#{ext}"
+                  _file = params[child_field][child_model_upload_field]
+                  if ["undefined", "blob", '', nil].include?(_file.original_filename)
+                    ext = _file.content_type.split("/").last
+                    _file.original_filename = "#{(Time.new.to_f*1_000_000).to_i}.#{ext}"
                   end
 
                   main_obj = @object
-                  embedded = main_obj.send(embedded_field).new
-                  embedded.send(embedded_model_upload_field + "=", params[embedded_field][embedded_model_upload_field])
-                  if embedded.save
+                  child = main_obj.send(child_field).new
+                  child.send(child_model_upload_field + "=", params[child_field][child_model_upload_field])
+                  if child.save
                     message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.success')}!</strong>"
                   else
-                    message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.error')}</strong>: #{embedded.errors.full_messages}"
+                    message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.save_error')}</strong>: #{child.errors.full_messages}"
                   end
 
                 rescue Exception => e

@@ -1,7 +1,3 @@
-module RailsAdminMultipleFileUpload
-
-end
-
 require "rails_admin_multiple_file_upload/version"
 require 'rails_admin_multiple_file_upload/engine'
 

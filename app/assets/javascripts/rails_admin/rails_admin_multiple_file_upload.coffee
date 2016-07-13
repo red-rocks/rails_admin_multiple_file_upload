@@ -42,6 +42,7 @@ if window.FileReader
                 xhr.responseType = "blob"
                 xhr.onload = ()->
                   _blob = xhr.response
+                  alert(_blob)
                   if _blob != null
                     dropzone.addFile(_blob)
                 xhr.send()

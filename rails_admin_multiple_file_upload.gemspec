@@ -20,6 +20,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "bundler", "~> 1.10"
   gem.add_development_dependency "rake", "~> 10.0"
 
-  gem.add_dependency "rails_admin"
-  gem.add_dependency 'dropzonejs-rails'
+  gem.add_dependency "rails_admin", "~> 0.8.1"
+  gem.add_dependency 'dropzonejs-rails', "~> 0.7.3"
 end
