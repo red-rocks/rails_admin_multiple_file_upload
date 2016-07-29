@@ -31,43 +31,42 @@
   .tab-content
       
     - multiple_file_upload_fields.each do |f|
-      - if f.is_a?(Hash)
-        - next if f.empty?
-        - child_field                = f.keys.first
-        - child_model_upload_field   = f.values.first
-      - else
-        - child_field                = f
-        - child_model_upload_field   = "image"
+    - if f.is_a?(Hash)
+      - next if f.empty?
+      - child_field                = f.keys.first
+      - child_model_upload_field   = f.values.first
+    - else
+      - child_field                = f
+      - child_model_upload_field   = "image"
 
-      - child_objects = @object.send(child_field)
-      - child_model_ordered_scope = ""
-      - if child_objects.respond_to?("sorted")
-        - child_model_ordered_scope = "sorted"
+    - child_objects = @object.send(child_field)
+    - child_model_ordered_scope = ""
+    - if child_objects.respond_to?("sorted")
+      - child_model_ordered_scope = "sorted"
 
-      - if child_objects.respond_to?("ordered") and child_model_ordered_scope.blank?
-        - child_model_ordered_scope = "ordered"
-        
-      .tab-pane{id="multiple_file_upload_#{child_field}_#{child_model_upload_field}"}
-        .row-fluid
-          - block_id  = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}"
-          - button_id = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}_button"
-          .span12.rails_admin_multiple_upload{id="#{block_id}"}
-            = rails_admin_multiple_file_upload child_objects.send(child_model_ordered_scope).to_a, {child_field: child_field, child_model_upload_field: child_model_upload_field}
-            
-          = button_tag "Загрузить", id: button_id
-          javascript:
-            $("##{block_id} .dropzone").dropzone({
-              paramName:        "#{child_field}[#{child_model_upload_field}]",
-              autoProcessQueue: false,
-              addRemoveLinks:   true
-            });
-            $("##{block_id} .dropzone")[0].dropzone.on('success', function(){
-              $("##{button_id}").click();
-            });
-            $("##{button_id}").click(function(e){
-              e.preventDefault();
-              $("##{block_id} .dropzone")[0].dropzone.processQueue();
-              return false
-            });
-            
-            setCopyAndPasteFor($("##{block_id}")[0]);
+    - if child_objects.respond_to?("ordered") and child_model_ordered_scope.blank?
+      - child_model_ordered_scope = "ordered"
+      
+    .tab-pane{id="multiple_file_upload_#{child_field}_#{child_model_upload_field}"}
+      .row-fluid
+        - block_id  = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}"
+        - button_id = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}_button"
+        .span12.rails_admin_multiple_upload{id="#{block_id}"}
+          = rails_admin_multiple_file_upload child_objects.send(child_model_ordered_scope).to_a, {child_field: child_field, child_model_upload_field: child_model_upload_field}
+          
+        = button_tag "Загрузить", id: button_id
+        javascript:
+          $("##{block_id} .dropzone").dropzone({
+            paramName:        "#{child_field}[#{child_model_upload_field}]",
+            autoProcessQueue: false,
+            addRemoveLinks:   true
+          });
+          $("##{block_id} .dropzone")[0].dropzone.on('success', function(){
+            $("##{button_id}").click();
+          });
+          $("##{button_id}").click(function(e){
+            e.preventDefault();
+            $("##{block_id} .dropzone")[0].dropzone.processQueue();
+            return false
+          });          
+          setCopyAndPasteFor($("##{block_id}")[0]);

@@ -1,7 +1,7 @@
 module RailsAdminMultipleFileUpload
   module Helper
     def rails_admin_multiple_file_upload(files, opts= {})
-      # backward compatibility 
+      # backward compatibility
       opts[:child_field] ||= opts[:embedded_field]
       opts[:child_model_order_field] ||= opts[:embedded_model_order_field]
       opts[:child_model_upload_field] ||= opts[:embedded_model_upload_field]
@@ -28,7 +28,7 @@ module RailsAdminMultipleFileUpload
     def rails_admin_multiple_file_upload_builder(files, config)
       ret = []
       _ret = []
-      @object.send(config[:child_field]).sorted.each do |ef|
+      files.each do |ef|
         if multiple_file_upload_paperclip?
           if ef.send(config[:child_model_upload_field] + "_content_type") =~ /\Aimage/
             file_url = ef.send(config[:child_model_upload_field]).url(multiple_file_upload_thumbnail_size)
@@ -37,9 +37,8 @@ module RailsAdminMultipleFileUpload
           else
             if ef.respond_to?(:name)
               file_name = ef.name
-            else
-              file_name = ef.send(config[:child_model_upload_field] + "_file_name")
             end
+            file_name = ef.send(config[:child_model_upload_field] + "_file_name") if file_name.blank?
             _ret << content_tag(:span, link_to(ef.name), class: "file_block_load_already")
           end
         end
@@ -60,6 +59,57 @@ module RailsAdminMultipleFileUpload
       end
       ret.join.html_safe
     end
+
+
+
+
+    def rails_admin_multiple_file_upload_collection(files, opts= {})
+
+      id = "ns_#{rand(100_000_000..999_999_999)}"
+      config = {
+          update_url: multiple_file_upload_collection_path(model_name: @abstract_model),
+          upload_field: opts[:upload_field]
+      }
+      content_tag(:div, rails_admin_multiple_file_upload_collection_builder(files, config), id: id, class: 'rails_admin_multiple_file_upload_collection')
+    end
+
+    def rails_admin_multiple_file_upload_collection_builder(files, config)
+      ret = []
+      _ret = []
+      _upload_field = (config[:upload_field].blank? ? "image" : config[:upload_field])
+      files.each do |ef|
+        if multiple_file_upload_paperclip?
+          if ef.send(_upload_field + "_content_type") =~ /\Aimage/
+            file_url = ef.send(_upload_field).url(multiple_file_upload_thumbnail_size)
+            _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
+
+          else
+            if ef.respond_to?(:name)
+              file_name = ef.name
+            end
+            file_name = ef.send(_upload_field + "_file_name") if file_name.blank?
+            _ret << content_tag(:span, link_to(ef.name), class: "file_block_load_already")
+          end
+        end
+      end
+      ret << content_tag(:div, _ret.join.html_safe)
+      ret << content_tag(:div, "", class: "clearfix")
+      @object = @abstract_model.model.new
+      ret << rails_admin_form_for(@object, url: config[:update_url], html: {method: :post, multipart: true, class: "form-horizontal denser dropzone"})do |f|
+        _ret = []
+        _ret << hidden_field_tag(:upload_field, _upload_field)
+        _ret.join.html_safe
+        # f.fields_for config[:child_field] do |ef|
+        #   @object.send(config[:child_field]).each do |field|
+        #     ef.input_for field
+        #   end
+        # end
+        # f.submit
+      end
+      ret.join.html_safe
+    end
+
+
 
 
 

@@ -8,3 +8,11 @@ ru:
         save_error: "Ошибка при сохранении"
         success:    "Успешно"
         title:      "Загрузка файлов"
+        
+      multiple_file_upload_collection:
+        menu:       "Загрузка файлов"
+        breadcrumb: "Загрузка файлов"
+        error:      "Ошибка"
+        save_error: "Ошибка при сохранении"
+        success:    "Успешно"
+        title:      "Загрузка файлов"
