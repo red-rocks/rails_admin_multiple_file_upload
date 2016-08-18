@@ -127,5 +127,9 @@ module RailsAdminMultipleFileUpload
       @conf.options[:thumbnail_size]
     end
 
+    def set_name_from_filename?
+      @conf.options[:name_from_filename]
+    end
+
   end
 end

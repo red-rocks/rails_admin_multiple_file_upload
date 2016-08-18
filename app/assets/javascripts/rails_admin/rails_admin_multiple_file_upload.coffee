@@ -24,28 +24,39 @@ link_regexp = /^\s*https?:\/\/[^\s]+\s*$/
 
 if window.FileReader
   window.setCopyAndPasteFor = (el)->
-    dropzone = el.getElementsByClassName('dropzone')[0].dropzone
-    el.onpaste = (event) ->
-      items = (event.clipboardData or event.originalEvent.clipboardData).items
-      blob = null
-      i = 0
-      while i < items.length
-        if items[i].type.indexOf('image') == 0
-          blob = items[i].getAsFile()
+    unless el.has_clipboard_callback
+      _pasteCallback = (event)->
+        dropzone = $(el).find(".rails_admin_multiple_file_upload_block .dropzone:visible")
+        return if dropzone.length == 0
+        dropzone = dropzone[0].dropzone
 
-        else
-          if items[i].kind == "string"
-            items[i].getAsString (text)->
-              if link_regexp.test(text)
-                xhr = new XMLHttpRequest()
-                xhr.open("GET", text)
-                xhr.responseType = "blob"
-                xhr.onload = ()->
-                  _blob = xhr.response
-                  if _blob != null
-                    dropzone.addFile(_blob)
-                xhr.send()
+        items = (event.clipboardData or event.originalEvent.clipboardData).items
+        blob = null
+        i = 0
+        while i < items.length
+          if items[i].type.indexOf('image') == 0
+            blob = items[i].getAsFile()
 
-        i++
-      if blob != null
-        dropzone.addFile(blob)
+          else
+            if items[i].kind == "string"
+              items[i].getAsString (text)->
+                if link_regexp.test(text)
+                  xhr = new XMLHttpRequest()
+                  xhr.open("GET", text)
+                  xhr.responseType = "blob"
+                  xhr.onload = ()->
+                    _blob = xhr.response
+                    if _blob != null
+                      dropzone.addFile(_blob)
+                  xhr.send()
+
+          i++
+        if blob != null
+          dropzone.addFile(blob)
+
+      el.addEventListener 'paste', _pasteCallback
+
+      el.has_clipboard_callback = true
+
+
+  window.setCopyAndPasteFor(document.body)

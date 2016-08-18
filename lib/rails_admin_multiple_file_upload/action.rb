@@ -42,12 +42,15 @@ module RailsAdmin
 
                   _file = params[child_field][child_model_upload_field]
                   if ["undefined", "blob", '', nil].include?(_file.original_filename)
-                    ext = _file.content_type.split("/").last
-                    _file.original_filename = "#{(Time.new.to_f*1_000_000).to_i}.#{ext}"
+                    ext = ".#{_file.content_type.split("/").last}"
+                    _file.original_filename = "#{(Time.new.to_f*1_000_000).to_i}#{ext}"
+                  else
+                    ext = File.extname(_file.original_filename)
                   end
 
                   main_obj = @object
                   child = main_obj.send(child_field).new
+                  child.name = File.basename(_file.original_filename, ext) if @conf.options[:name_from_filename]
                   child.send(child_model_upload_field + "=", _file)
                   if child.save
                     message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.success')}!</strong>"
@@ -119,11 +122,14 @@ module RailsAdmin
 
                 _file = params[upload_field]
                 if ["undefined", "blob", '', nil].include?(_file.original_filename)
-                  ext = _file.content_type.split("/").last
-                  _file.original_filename = "#{(Time.new.to_f*1_000_000).to_i}.#{ext}"
+                  ext = ".#{_file.content_type.split("/").last}"
+                  _file.original_filename = "#{(Time.new.to_f*1_000_000).to_i}#{ext}"
+                else
+                  ext = File.extname(_file.original_filename)
                 end
 
                 @object = @model.new
+                @object.name = File.basename(_file.original_filename, ext) if @conf.options[:name_from_filename]
                 @object.send(upload_field + "=", _file)
                 if @object.save
                   message = "<strong>#{I18n.t('admin.actions.multiple_file_upload_collection.success')}!</strong>"
