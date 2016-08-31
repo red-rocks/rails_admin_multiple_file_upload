@@ -22,8 +22,9 @@
 
             i18n_path         = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}.#{upload_field}"
             i18n_path_default = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}"
-
-            link = "#multiple_file_upload_collection_#{@model.name.tableize}_#{upload_field}"
+            
+            _escape_tableize = @model.name.tableize.gsub("/", "_")
+            link = "#multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"
             title = I18n.t(i18n_path, default: I18n.t(i18n_path_default))
           li
             = link_to I18n.t(i18n_path, default: I18n.t(i18n_path_default)), link, title: title, "data-toggle" => "tab"
@@ -40,8 +41,9 @@
       
       .tab-pane{id="multiple_file_upload_collection_#{@model.name.tableize}_#{upload_field}"}
         .row-fluid
-          - block_id  = "rails_admin_multiple_upload_collection_#{@model.name.tableize}_#{upload_field}"
-          - button_id = "rails_admin_multiple_upload_collection_#{@model.name.tableize}_#{upload_field}_button"
+          - _escape_tableize = @model.name.tableize.gsub("/", "_")
+          - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}"
+          - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button"
           .span12.rails_admin_multiple_upload_collection{id="#{block_id}"}
             = rails_admin_multiple_file_upload_collection objects, {upload_field: upload_field}
             
@@ -64,7 +66,8 @@
       
     - else
       - multiple_file_upload_fields.each do |f|
-        - upload_field = f      
+        - upload_field = f   
+        - _escape_tableize = @model.name.tableize.gsub("/", "_")   
         - if @model.respond_to?("sorted")
           - objects = @model.sorted.to_a
         - elsif child_objects.respond_to?("ordered")
@@ -72,10 +75,10 @@
         -else
           - objects = @model.all.to_a
 
-        .tab-pane{id="rails_admin_multiple_upload_collection_#{@model.name.tableize}_#{upload_field}"}
+        .tab-pane{id="rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}"}
           .row-fluid
-            - block_id  = "rails_admin_multiple_upload_collection_#{@model.name.tableize}_#{upload_field}"
-            - button_id = "rails_admin_multiple_upload_collection_#{@model.name.tableize}_#{upload_field}_button"
+            - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}"
+            - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button"
             .span12.rails_admin_multiple_upload{id="#{block_id}"}
               = rails_admin_multiple_file_upload_collection objects, {upload_field: upload_field}
               
