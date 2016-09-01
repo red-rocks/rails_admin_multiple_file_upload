@@ -6,11 +6,12 @@
     ul.nav.nav-tabs
       - if multiple_file_upload_fields.blank?
         ruby:        
+          _escape_tableize  = @model.name.tableize.gsub("/", "_")
           upload_field      = "image"
           i18n_path         = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}.#{upload_field}"
           i18n_path_default = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}"
 
-          link = "#multiple_file_upload_collection_#{@model.name.tableize}_#{upload_field}"
+          link = "#multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"
           title = I18n.t(i18n_path, default: I18n.t(i18n_path_default))
         li
           = link_to I18n.t(i18n_path, default: I18n.t(i18n_path_default)), link, title: title, "data-toggle" => "tab"
@@ -19,11 +20,11 @@
         - multiple_file_upload_fields.each do |f|
           ruby:
             upload_field      = f
+            _escape_tableize = @model.name.tableize.gsub("/", "_")
 
             i18n_path         = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}.#{upload_field}"
             i18n_path_default = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}"
             
-            _escape_tableize = @model.name.tableize.gsub("/", "_")
             link = "#multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"
             title = I18n.t(i18n_path, default: I18n.t(i18n_path_default))
           li
@@ -36,12 +37,12 @@
         - objects = @model.sorted.to_a
       - elsif child_objects.respond_to?("ordered")
         - objects = @model.ordered.to_a
-      -else
+      - else
         - objects = @model.all.to_a
-      
-      .tab-pane{id="multiple_file_upload_collection_#{@model.name.tableize}_#{upload_field}"}
+        
+      - _escape_tableize = @model.name.tableize.gsub("/", "_")
+      .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"}
         .row-fluid
-          - _escape_tableize = @model.name.tableize.gsub("/", "_")
           - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}"
           - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button"
           .span12.rails_admin_multiple_upload_collection{id="#{block_id}"}
@@ -75,7 +76,7 @@
         -else
           - objects = @model.all.to_a
 
-        .tab-pane{id="rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}"}
+        .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"}
           .row-fluid
             - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}"
             - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button"
