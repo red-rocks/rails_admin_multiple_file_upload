@@ -7,8 +7,8 @@ Gem::Specification.new do |gem|
   gem.name          = "rails_admin_multiple_file_upload"
   gem.version       = RailsAdminMultipleFileUpload::VERSION
   gem.authors       = ["Alexander Kiseliev"]
-  spec.email         = ["i43ack@gmail.com"]
-  
+  gem.email         = ["i43ack@gmail.com"]
+
   gem.description   = %q{Rails admin multiple file upload with AJAX and DnD}
   gem.summary       = %q{Interface for uploading files for rails_admin}
   gem.homepage      = "https://github.com/red-rocks/rails_admin_multiple_file_upload"
