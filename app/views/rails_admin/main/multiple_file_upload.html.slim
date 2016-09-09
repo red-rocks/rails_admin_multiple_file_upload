@@ -9,20 +9,20 @@
           ruby:
             if f.is_a?(Hash)
               next if f.empty?
-              child_field               = f.keys.first
-              child_model_upload_field  = f.values.first
+              child_field               = f.keys.first.freeze
+              child_model_upload_field  = f.values.first.freeze
               child_model_upload_field  = child_model_upload_field.last if child_model_upload_field.is_a?(Array)
 
-              i18n_path         = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{child_field}.#{child_model_upload_field}"
-              i18n_path_default = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{child_field}"
+              i18n_path         = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{child_field}.#{child_model_upload_field}".freeze
+              i18n_path_default = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{child_field}".freeze
 
-              link = "#multiple_file_upload_#{child_field}_#{child_model_upload_field}"
+              link = "#multiple_file_upload_#{child_field}_#{child_model_upload_field}".freeze
               title = I18n.t(i18n_path, default: I18n.t(i18n_path_default))
 
             else
-              i18n_path         = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{f}.image"
-              i18n_path_default = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{f}"
-              link = "#multiple_file_upload_#{f}_image"
+              i18n_path         = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{f}.image".freeze
+              i18n_path_default = "rails_admin.multiple_file_upload.#{@object.class.name.tableize}.#{f}".freeze
+              link = "#multiple_file_upload_#{f}_image".freeze
               title = I18n.t(i18n_path, default: I18n.t(i18n_path_default))
             end
 
@@ -33,28 +33,28 @@
     - multiple_file_upload_fields.each do |f|
       - if f.is_a?(Hash)
         - next if f.empty?
-        - child_field                = f.keys.first
-        - child_model_upload_field   = f.values.first
+        - child_field                = f.keys.first.freeze
+        - child_model_upload_field   = f.values.first.freeze
       - else
-        - child_field                = f
-        - child_model_upload_field   = "image"
+        - child_field                = f.freeze
+        - child_model_upload_field   = "image".freeze
 
       - child_objects = @object.send(child_field)
-      - child_model_ordered_scope = ""
+      - child_model_ordered_scope = "".freeze
       - if child_objects.respond_to?("sorted")
-        - child_model_ordered_scope = "sorted"
+        - child_model_ordered_scope = "sorted".freeze
 
       - if child_objects.respond_to?("ordered") and child_model_ordered_scope.blank?
-        - child_model_ordered_scope = "ordered"
+        - child_model_ordered_scope = "ordered".freeze
         
-      .tab-pane{id="multiple_file_upload_#{child_field}_#{child_model_upload_field}"}
+      .tab-pane{id="multiple_file_upload_#{child_field}_#{child_model_upload_field}".freeze}
         .row-fluid
-          - block_id  = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}"
-          - button_id = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}_button"
-          .span12.rails_admin_multiple_upload{id="#{block_id}"}
+          - block_id  = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}".freeze
+          - button_id = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}_button".freeze
+          .span12.rails_admin_multiple_upload{id=block_id}
             = rails_admin_multiple_file_upload child_objects.send(child_model_ordered_scope).to_a, {child_field: child_field, child_model_upload_field: child_model_upload_field}
             
-          = button_tag "Загрузить", id: button_id
+          = button_tag "Загрузить".freeze, id: button_id
           javascript:
             $("##{block_id} .dropzone").dropzone({
               paramName:        "#{child_field}[#{child_model_upload_field}]",
