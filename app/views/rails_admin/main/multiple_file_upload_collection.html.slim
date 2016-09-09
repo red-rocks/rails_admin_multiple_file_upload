@@ -7,32 +7,32 @@
       - if multiple_file_upload_fields.blank?
         ruby:        
           _escape_tableize  = @model.name.tableize.gsub("/", "_")
-          upload_field      = "image"
-          i18n_path         = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}.#{upload_field}"
-          i18n_path_default = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}"
+          upload_field      = "image".freeze
+          i18n_path         = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}.#{upload_field}"v
+          i18n_path_default = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}".freeze
 
-          link = "#multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"
-          title = I18n.t(i18n_path, default: I18n.t(i18n_path_default))
+          link = "#multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}".freeze
+          title = I18n.t(i18n_path, default: I18n.t(i18n_path_default)).freeze
         li
           = link_to I18n.t(i18n_path, default: I18n.t(i18n_path_default)), link, title: title, "data-toggle" => "tab"
           
       - else
         - multiple_file_upload_fields.each do |f|
           ruby:
-            upload_field      = f
-            _escape_tableize = @model.name.tableize.gsub("/", "_")
+            upload_field      = f.freeze
+            _escape_tableize = @model.name.tableize.gsub("/", "_").freeze
 
-            i18n_path         = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}.#{upload_field}"
-            i18n_path_default = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}"
+            i18n_path         = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}.#{upload_field}".freeze
+            i18n_path_default = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}".freeze
             
-            link = "#multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"
+            link = "#multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}".freeze
             title = I18n.t(i18n_path, default: I18n.t(i18n_path_default))
           li
             = link_to I18n.t(i18n_path, default: I18n.t(i18n_path_default)), link, title: title, "data-toggle" => "tab"
 
   .tab-content
     - if multiple_file_upload_fields.blank?
-      - upload_field = "image"
+      - upload_field = "image".freeze
       - if @model.respond_to?("sorted")
         - objects = @model.sorted.to_a
       - elsif child_objects.respond_to?("ordered")
@@ -40,12 +40,12 @@
       - else
         - objects = @model.all.to_a
         
-      - _escape_tableize = @model.name.tableize.gsub("/", "_")
-      .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"}
+      - _escape_tableize = @model.name.tableize.gsub("/", "_").freeze
+      .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}".freeze}
         .row-fluid
-          - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}"
-          - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button"
-          .span12.rails_admin_multiple_upload_collection{id="#{block_id}"}
+          - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}".freeze
+          - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button".freeze
+          .span12.rails_admin_multiple_upload_collection{id=block_id}
             = rails_admin_multiple_file_upload_collection objects, {upload_field: upload_field}
             
           = button_tag "Загрузить", id: button_id
@@ -67,8 +67,8 @@
       
     - else
       - multiple_file_upload_fields.each do |f|
-        - upload_field = f   
-        - _escape_tableize = @model.name.tableize.gsub("/", "_")   
+        - upload_field = f.freeze
+        - _escape_tableize = @model.name.tableize.gsub("/", "_").freeze
         - if @model.respond_to?("sorted")
           - objects = @model.sorted.to_a
         - elsif child_objects.respond_to?("ordered")
@@ -76,14 +76,14 @@
         -else
           - objects = @model.all.to_a
 
-        .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"}
+        .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}".freeze}
           .row-fluid
-            - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}"
-            - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button"
-            .span12.rails_admin_multiple_upload{id="#{block_id}"}
+            - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}".freeze
+            - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button".freeze
+            .span12.rails_admin_multiple_upload{id=block_id}
               = rails_admin_multiple_file_upload_collection objects, {upload_field: upload_field}
               
-            = button_tag "Загрузить", id: button_id
+            = button_tag "Загрузить".freeze, id: button_id
             javascript:
               $("##{block_id} .dropzone").dropzone({
                 paramName:        "#{upload_field}",

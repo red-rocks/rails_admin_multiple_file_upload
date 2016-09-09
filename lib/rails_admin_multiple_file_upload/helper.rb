@@ -15,14 +15,14 @@ module RailsAdminMultipleFileUpload
           m.send(_meth).to_i
         end
       end
-      id = "ns_#{rand(100_000_000..999_999_999)}"
+      id = "ns_#{rand(100_000_000..999_999_999)}".freeze
       config = {
           update_url: multiple_file_upload_path(model_name: @abstract_model),
           child_field: opts[:child_field],
           child_model_upload_field: opts[:child_model_upload_field] || "image",
           child_model: @abstract_model.model.new.send(opts[:child_field]).new.class.name
       }
-      content_tag(:div, rails_admin_multiple_file_upload_builder(files, config), id: id, class: 'rails_admin_multiple_file_upload')
+      content_tag(:div, rails_admin_multiple_file_upload_builder(files, config), id: id, class: 'rails_admin_multiple_file_upload'.freeze)
     end
 
     def rails_admin_multiple_file_upload_builder(files, config)
@@ -65,12 +65,12 @@ module RailsAdminMultipleFileUpload
 
     def rails_admin_multiple_file_upload_collection(files, opts= {})
 
-      id = "ns_#{rand(100_000_000..999_999_999)}"
+      id = "ns_#{rand(100_000_000..999_999_999)}".freeze
       config = {
           update_url: multiple_file_upload_collection_path(model_name: @abstract_model),
           upload_field: opts[:upload_field]
       }
-      content_tag(:div, rails_admin_multiple_file_upload_collection_builder(files, config), id: id, class: 'rails_admin_multiple_file_upload_collection')
+      content_tag(:div, rails_admin_multiple_file_upload_collection_builder(files, config), id: id, class: 'rails_admin_multiple_file_upload_collection'.freeze)
     end
 
     def rails_admin_multiple_file_upload_collection_builder(files, config)
@@ -81,21 +81,21 @@ module RailsAdminMultipleFileUpload
         if multiple_file_upload_paperclip?
           if ef.send(_upload_field + "_content_type") =~ /\Aimage/
             file_url = ef.send(_upload_field).url(multiple_file_upload_thumbnail_size)
-            _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
+            _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already".freeze)
 
           else
             if ef.respond_to?(:name)
               file_name = ef.name
             end
             file_name = ef.send(_upload_field + "_file_name") if file_name.blank?
-            _ret << content_tag(:span, link_to(ef.name), class: "file_block_load_already")
+            _ret << content_tag(:span, link_to(ef.name), class: "file_block_load_already".freeze)
           end
         end
       end
       ret << content_tag(:div, _ret.join.html_safe)
       ret << content_tag(:div, "", class: "clearfix")
       @object = @abstract_model.model.new
-      ret << rails_admin_form_for(@object, url: config[:update_url], html: {method: :post, multipart: true, class: "form-horizontal denser dropzone"})do |f|
+      ret << rails_admin_form_for(@object, url: config[:update_url], html: {method: :post, multipart: true, class: "form-horizontal denser dropzone".freeze})do |f|
         _ret = []
         _ret << hidden_field_tag(:upload_field, _upload_field)
         _ret.join.html_safe

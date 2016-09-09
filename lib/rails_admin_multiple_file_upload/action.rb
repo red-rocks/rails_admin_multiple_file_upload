@@ -43,7 +43,7 @@ module RailsAdmin
                   _file = params[child_field][child_model_upload_field]
                   if ["undefined", "blob", '', nil].include?(_file.original_filename)
                     ext = ".#{_file.content_type.split("/").last}"
-                    _file.original_filename = "#{(Time.new.to_f*1_000_000).to_i}#{ext}"
+                    _file.original_filename = "#{(Time.new.to_f*1_000_000).to_i}#{ext}".freeze
                   else
                     ext = File.extname(_file.original_filename)
                   end
@@ -53,13 +53,13 @@ module RailsAdmin
                   child.name = File.basename(_file.original_filename, ext) if @conf.options[:name_from_filename]
                   child.send(child_model_upload_field + "=", _file)
                   if child.save
-                    message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.success')}!</strong>"
+                    message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.success')}!</strong>".freeze
                   else
-                    message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.save_error')}</strong>: #{child.errors.full_messages}"
+                    message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.save_error')}</strong>: #{child.errors.full_messages}".freeze
                   end
 
                 rescue Exception => e
-                  message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.error')}</strong>: #{e}"
+                  message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.error')}</strong>: #{e}".freeze
                 end
 
                 render text: message
