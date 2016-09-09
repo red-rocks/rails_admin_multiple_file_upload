@@ -2,5 +2,5 @@
 bundle update
 git add --all .
 git commit -am "${*:1}"
-git push
+git push rails5
 rake release
