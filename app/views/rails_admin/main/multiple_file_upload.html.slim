@@ -47,7 +47,7 @@
       - if child_objects.respond_to?("ordered") and child_model_ordered_scope.blank?
         - child_model_ordered_scope = "ordered".freeze
         
-      .tab-pane{id="multiple_file_upload_#{child_field}_#{child_model_upload_field}".freeze}
+      .tab-pane{id="multiple_file_upload_#{child_field}_#{child_model_upload_field}"}
         .row-fluid
           - block_id  = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}".freeze
           - button_id = "rails_admin_multiple_upload_#{child_field}_#{child_model_upload_field}_button".freeze

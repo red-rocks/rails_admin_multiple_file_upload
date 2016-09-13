@@ -8,7 +8,7 @@
         ruby:        
           _escape_tableize  = @model.name.tableize.gsub("/", "_")
           upload_field      = "image".freeze
-          i18n_path         = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}.#{upload_field}"v
+          i18n_path         = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}.#{upload_field}".freeze
           i18n_path_default = "rails_admin.multiple_file_upload_collection.#{@model.name.tableize}".freeze
 
           link = "#multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}".freeze
@@ -41,7 +41,7 @@
         - objects = @model.all.to_a
         
       - _escape_tableize = @model.name.tableize.gsub("/", "_").freeze
-      .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}".freeze}
+      .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"}
         .row-fluid
           - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}".freeze
           - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button".freeze
@@ -73,10 +73,10 @@
           - objects = @model.sorted.to_a
         - elsif child_objects.respond_to?("ordered")
           - objects = @model.ordered.to_a
-        -else
+        - else
           - objects = @model.all.to_a
 
-        .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}".freeze}
+        .tab-pane{id="multiple_file_upload_collection_#{_escape_tableize}_#{upload_field}"}
           .row-fluid
             - block_id  = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}".freeze
             - button_id = "rails_admin_multiple_upload_collection_#{_escape_tableize}_#{upload_field}_button".freeze
