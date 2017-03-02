@@ -59,7 +59,8 @@
             $("##{block_id} .dropzone").dropzone({
               paramName:        "#{child_field}[#{child_model_upload_field}]",
               autoProcessQueue: false,
-              addRemoveLinks:   true
+              addRemoveLinks:   true,
+              parallelUploads: 1
             });
             $("##{block_id} .dropzone")[0].dropzone.on('success', function(){
               $("##{button_id}").click();
