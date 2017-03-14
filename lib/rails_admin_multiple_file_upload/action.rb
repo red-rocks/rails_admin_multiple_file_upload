@@ -49,9 +49,25 @@ module RailsAdmin
                   end
 
                   main_obj = @object
-                  child = main_obj.send(child_field).new
+                  child_scope = main_obj.send(child_field)
+                  child = child_scope.new
                   child.name = File.basename(_file.original_filename, ext) if @conf.options[:name_from_filename]
                   child.send(child_model_upload_field + "=", _file)
+                  if @conf.options[:set_order_as_max_plus_one]
+                    begin
+                      if @conf.options[:set_order_as_max_plus_one].is_a?(Symbol) or @conf.options[:set_order_as_max_plus_one].is_a?(string)
+                        f_name = @conf.options[:set_order_as_max_plus_one]
+                      else
+                        f_name = :order
+                      end
+                      if child.respond_to?(f_name) and child.respond_to?("#{f_name}=") and child_scope.respond_to?(f_name)
+                        current_max = child_scope.max(f_name).to_i
+                        child.send("#{f_name}=", current_max + 1)
+                      end
+                    rescue Exception => ex
+                      puts ex.inspect
+                    end
+                  end
                   if child.save
                     message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.success')}!</strong>".freeze
                   else
@@ -62,7 +78,7 @@ module RailsAdmin
                   message = "<strong>#{I18n.t('admin.actions.multiple_file_upload.error')}</strong>: #{e}".freeze
                 end
 
-                render text: message
+                render plain: message
               end
             end
           end
@@ -141,7 +157,7 @@ module RailsAdmin
                 message = "<strong>#{I18n.t('admin.actions.multiple_file_upload_collection.error')}</strong>: #{e}"
               end
 
-              render text: message
+              render plain: message
             end
           end
         end

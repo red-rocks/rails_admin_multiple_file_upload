@@ -9,7 +9,8 @@ module RailsAdminMultipleFileUpload
           fields: [{}],
           thumbnail_size: :thumb,
           upload_gem: :paperclip,
-          name_from_filename: true
+          name_from_filename: true,
+          set_order_as_max_plus_one: true
       }.merge(config || {})
     end
 
