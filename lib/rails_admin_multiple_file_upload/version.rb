@@ -1,3 +1,3 @@
 module RailsAdminMultipleFileUpload
-  VERSION = "0.4.2.1".freeze
+  VERSION = "0.4.3".freeze
 end

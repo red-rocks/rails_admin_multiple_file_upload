@@ -6,7 +6,7 @@ rails_admin + dropzone.js + mongoid(embedded)
 
 Add this line to your application's Gemfile:
 
-    gem 'rails_admin_multiple_file_upload'
+    gem 'rails_admin_multiple_file_upload', '~> 0.4.3'
 
 And then execute:
 
