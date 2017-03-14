@@ -55,7 +55,7 @@ module RailsAdmin
                   child.send(child_model_upload_field + "=", _file)
                   if @conf.options[:set_order_as_max_plus_one]
                     begin
-                      if @conf.options[:set_order_as_max_plus_one].is_a?(Symbol) or @conf.options[:set_order_as_max_plus_one].is_a?(string)
+                      if @conf.options[:set_order_as_max_plus_one].is_a?(Symbol) or @conf.options[:set_order_as_max_plus_one].is_a?(String)
                         f_name = @conf.options[:set_order_as_max_plus_one]
                       else
                         f_name = :order
