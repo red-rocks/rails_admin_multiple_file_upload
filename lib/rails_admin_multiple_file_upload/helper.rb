@@ -30,7 +30,7 @@ module RailsAdminMultipleFileUpload
       _ret = []
       files.each do |ef|
         if multiple_file_upload_paperclip?
-          if ef.send(config[:child_model_upload_field] + "_content_type") =~ /\Aimage/
+          if ef.send("#{config[:child_model_upload_field]}_content_type") =~ /\Aimage/
             file_url = ef.send(config[:child_model_upload_field]).url(multiple_file_upload_thumbnail_size)
             _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
 
@@ -38,7 +38,7 @@ module RailsAdminMultipleFileUpload
             if ef.respond_to?(:name)
               file_name = ef.name
             end
-            file_name = ef.send(config[:child_model_upload_field] + "_file_name") if file_name.blank?
+            file_name = ef.send("#{config[:child_model_upload_field]}_file_name") if file_name.blank?
             _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already")
           end
 
@@ -98,7 +98,7 @@ module RailsAdminMultipleFileUpload
       _upload_field = (config[:upload_field].blank? ? "image" : config[:upload_field]).to_s
       files.each do |ef|
         if multiple_file_upload_paperclip?
-          if ef.send(_upload_field + "_content_type") =~ /\Aimage/
+          if ef.send("#{_upload_field}_content_type") =~ /\Aimage/
             file_url = ef.send(_upload_field).url(multiple_file_upload_thumbnail_size)
             _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already".freeze)
 
@@ -106,7 +106,7 @@ module RailsAdminMultipleFileUpload
             if ef.respond_to?(:name)
               file_name = ef.name
             end
-            file_name = ef.send(_upload_field + "_file_name") if file_name.blank?
+            file_name = ef.send("#{_upload_field}_file_name") if file_name.blank?
             _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already".freeze)
           end        
 
