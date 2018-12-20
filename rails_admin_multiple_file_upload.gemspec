@@ -24,5 +24,6 @@ Gem::Specification.new do |gem|
   gem.add_dependency "rails", '>= 5.0'
 
   gem.add_dependency "rails_admin", '>= 1.3.0'
-  gem.add_dependency 'dropzonejs-rails', "~> 0.8.2"
+  # gem.add_dependency 'dropzonejs-rails', "~> 0.8.2"
+  gem.add_dependency 'dropzonejs-rails', ">= 0.7.3"
 end

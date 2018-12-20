@@ -39,7 +39,21 @@ module RailsAdminMultipleFileUpload
               file_name = ef.name
             end
             file_name = ef.send(config[:child_model_upload_field] + "_file_name") if file_name.blank?
-            _ret << content_tag(:span, link_to(ef.name), class: "file_block_load_already")
+            _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already")
+          end
+
+        elsif multiple_file_upload_shrine?
+          file_obj = ef.send(config[:child_model_upload_field])[multiple_file_upload_thumbnail_size.to_sym]
+          if file_obj.metadata['mime_type'] =~ /\Aimage/
+            file_url = file_obj.url
+            _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
+
+          else
+            if ef.respond_to?(:name)
+              file_name = ef.name
+            end
+            file_name = file_obj.metadata['filename'] if file_name.blank?
+            _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already")
           end
         end
       end
@@ -76,7 +90,7 @@ module RailsAdminMultipleFileUpload
     def rails_admin_multiple_file_upload_collection_builder(files, config)
       ret = []
       _ret = []
-      _upload_field = (config[:upload_field].blank? ? "image" : config[:upload_field])
+      _upload_field = (config[:upload_field].blank? ? "image" : config[:upload_field]).to_s
       files.each do |ef|
         if multiple_file_upload_paperclip?
           if ef.send(_upload_field + "_content_type") =~ /\Aimage/
@@ -88,7 +102,21 @@ module RailsAdminMultipleFileUpload
               file_name = ef.name
             end
             file_name = ef.send(_upload_field + "_file_name") if file_name.blank?
-            _ret << content_tag(:span, link_to(ef.name), class: "file_block_load_already".freeze)
+            _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already".freeze)
+          end        
+
+        elsif multiple_file_upload_shrine?
+          file_obj = ef.send(_upload_field)[multiple_file_upload_thumbnail_size.to_sym]
+          if file_obj.metadata['mime_type'] =~ /\Aimage/
+            file_url = file_obj.url
+            _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
+
+          else
+            if ef.respond_to?(:name)
+              file_name = ef.name
+            end
+            file_name = file_obj.metadata['filename'] if file_name.blank?
+            _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already")
           end
         end
       end
@@ -123,6 +151,10 @@ module RailsAdminMultipleFileUpload
     def multiple_file_upload_carrierwave?
       @conf.options[:upload_gem] == :carrierwave
     end
+    def multiple_file_upload_shrine?
+      @conf.options[:upload_gem] == :shrine
+    end
+
     def multiple_file_upload_thumbnail_size
       @conf.options[:thumbnail_size]
     end
