@@ -46,16 +46,18 @@ module RailsAdminMultipleFileUpload
           attach = ef.send(config[:child_model_upload_field])
           if attach
             file_obj = attach[multiple_file_upload_thumbnail_size.to_sym]
-            if file_obj.metadata['mime_type'] =~ /\Aimage/
-              file_url = file_obj.url
-              _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
+            if file_obj
+              if file_obj.metadata['mime_type'] =~ /\Aimage/
+                file_url = file_obj.url
+                _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
 
-            else
-              if ef.respond_to?(:name)
-                file_name = ef.name
+              else
+                if ef.respond_to?(:name)
+                  file_name = ef.name
+                end
+                file_name = file_obj.metadata['filename'] if file_name.blank?
+                _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already")
               end
-              file_name = file_obj.metadata['filename'] if file_name.blank?
-              _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already")
             end
           end
         end
@@ -112,16 +114,18 @@ module RailsAdminMultipleFileUpload
           attach = ef.send(_upload_field)
           if attach
             file_obj = ef.send(_upload_field)[multiple_file_upload_thumbnail_size.to_sym]
-            if file_obj.metadata['mime_type'] =~ /\Aimage/
-              file_url = file_obj.url
-              _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
+            if file_obj
+              if file_obj.metadata['mime_type'] =~ /\Aimage/
+                file_url = file_obj.url
+                _ret << content_tag(:span, image_tag(file_url), class: "file_block_load_already")
 
-            else
-              if ef.respond_to?(:name)
-                file_name = ef.name
+              else
+                if ef.respond_to?(:name)
+                  file_name = ef.name
+                end
+                file_name = file_obj.metadata['filename'] if file_name.blank?
+                _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already")
               end
-              file_name = file_obj.metadata['filename'] if file_name.blank?
-              _ret << content_tag(:span, link_to(file_name), class: "file_block_load_already")
             end
           end
         end
